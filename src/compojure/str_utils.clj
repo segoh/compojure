@@ -8,8 +8,7 @@
 
 (ns compojure.str-utils
   "Utility functions for manipulating strings."
-  (:use clojure.contrib.seq-utils
-        clojure.contrib.str-utils)
+  (:use clojure.contrib.str-utils)
   (:import clojure.lang.Named))
 
 (defn escape
@@ -42,7 +41,7 @@
   "A version of str that prefers the names of Named objects.
   e.g (str \"Hello \" :World)  => \"Hello :World\"
       (str* \"Hello \" :World) => \"Hello World\""
-  [& args] 
+  [& args]
   (map-str
     #(if (instance? Named %) (name %) (str %))
     args))

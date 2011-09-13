@@ -9,7 +9,7 @@
 (ns compojure.encodings
   "Functions for encoding data."
   (:use compojure.str-utils
-        clojure.contrib.duck-streams)
+        [clojure.contrib.duck-streams :only [*default-encoding*]])
   (:import [java.net URLEncoder URLDecoder]
            [org.apache.commons.codec.binary Base64 Hex]))
 
@@ -27,12 +27,12 @@
   "Encode an array of bytes into a base64 encoded string."
   [unencoded]
   (String. (Base64/encodeBase64 unencoded)))
- 
+
 (defn base64-encode
   [unencoded]
   "Encode a string using base64."
   (base64-encode-bytes (.getBytes unencoded)))
- 
+
 (defn base64-decode-bytes
   "Decode a string using base64 into an array of bytes."
   [encoded]
@@ -42,12 +42,12 @@
   "Decode a string using base64."
   [encoded]
   (String. (base64-decode-bytes encoded)))
-  
+
 (defn marshal
   "Serialize a Clojure object in a base64-encoded string."
   [data]
   (base64-encode (pr-str data)))
- 
+
 (defn unmarshal
   "Unserialize a Clojure object from a base64-encoded string."
   [marshaled]

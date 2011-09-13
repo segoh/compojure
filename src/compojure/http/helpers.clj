@@ -11,8 +11,7 @@
   (:use compojure.encodings
         compojure.str-utils
         clojure.contrib.def
-        clojure.contrib.str-utils
-        clojure.contrib.duck-streams)
+        clojure.contrib.str-utils)
   (:import java.io.File))
 
 (defn- encode-cookie
@@ -38,7 +37,7 @@
   "A shortcut for a '302 Moved' HTTP redirect."
   [location]
   [302 {:headers {"Location" location}}])
- 
+
 (defn page-not-found
   "A shortcut to create a '404 Not Found' HTTP response."
   ([]
@@ -69,7 +68,7 @@
   ([root path]
     (let [filepath (File. root path)]
       (if (safe-path? root path)
-        (cond 
+        (cond
           (.isFile filepath)
             filepath
           (.isDirectory filepath)

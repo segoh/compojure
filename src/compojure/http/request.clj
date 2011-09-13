@@ -12,7 +12,7 @@
         compojure.encodings
         compojure.map-utils
         compojure.str-utils
-        clojure.contrib.duck-streams
+        [clojure.contrib.duck-streams :only [*default-encoding* slurp*]]
         clojure.contrib.str-utils)
   (:import java.net.URLDecoder
            java.io.InputStreamReader))
