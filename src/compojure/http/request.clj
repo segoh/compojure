@@ -60,7 +60,8 @@
   [request]
   (if (urlencoded-form? request)
     (if-let [body (slurp-body request)]
-      (parse-params body #"&"))))
+      {:form-params (parse-params body #"&")
+       :raw-form-params body})))
 
 (defn- get-merged-params
   "Get a map of all the parameters merged together."
@@ -68,6 +69,11 @@
   (merge (:query-params request)
          (:form-params request)
          (:params request)))
+
+(defn- merge-func
+  "Merge the result of a (func request) with the request map."
+  [request func]
+  (merge (func request) request))
 
 (defn- assoc-func
   "Associate the result of a (func request) with a key on the request map."
@@ -81,9 +87,9 @@
   to the request map: :query-params, :form-params and :params."
   [request]
   (-> request
-    (assoc-func :query-params parse-query-params)
-    (assoc-func :form-params  parse-form-params)
-    (assoc-func :params       get-merged-params)))
+      (assoc-func :query-params parse-query-params)
+      (merge-func parse-form-params)
+      (assoc-func :params       get-merged-params)))
 
 (defn with-request-params
   "Decorator that adds urlencoded parameters to the request map."
